@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block title %}Django: TO DO LIST{% endblock %}
+
+
+{% block styles %}
+    <style>
+        .check-status {
+            text-decoration: line-through;
+            color: #cbcbcb;
+        }
+    </style>
+{% endblock styles %}
+    
+
+
+
+{% block content %}
+    <div class="p-5"> 
+	    <h2>Django: TO DO LIST</h2>  
+
+		<form class="d-flex gap-4 col-md-6" method="POST"> 
+	        {% csrf_token %}  
+			<button type="submit" class="btn btn-success"><i class="fa fa-plus"></i></button> 
+			{{form}}  
+		</form>     
+
+		<table class="table"> 
+
+            <thead>
+                <tr>
+                    <th scope="col">Titulo</th> 
+                    <th scope="col">Status</th>
+                    <th scope="col">Deletar</th> 
+                </tr>
+            </thead>
+
+            {% for el in todo %} 
+            <tbody>
+                <tr class="table align-middle" id="{{el.id}}"> 
+
+                    <th scope="row"> 
+
+                        <div class="title {% if el.status.id == 3 %}check-status{% endif %}" id="title{{el.id}}" data-title="{{el.id}}">{{el.title}}</div> 
+                        
+                        <form class="d-none d-flex" id="form-title{{el.id}}" method="GET" style="width:35rem;">
+                            <input class="form-control" type="text" id="inputText{{el.id}}" value="{{el.title}}">
+                            <button type="submit" class="btn" id="edit{{el.id}}"><i class="fa fa-edit link-warning"></i></button>
+                        </form> 
+                    </th>  
+  
+                    <th scope="row">  
+                        <th scope="row"> 
+                            <div class="SelDiv">
+                                <select class="form-select" name="status" id="{{el.id}}">
+                                    {% for st in status_list %}
+                                    <option value="{{st.id}}"{% if el.status.id == st.id %}selected{% endif %}>{{st.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div> 
+                        </th> 
+                    </th> 
+
+                    <th scope="row">
+                        <a class="btn" id="btn-delete" data-delete="{{el.id}}"><i class="fa fa-trash link-danger"></i></a>
+				 	</th> 
+
+                </tr>
+            </tbody>  
+            {% endfor %}
+
+        </table>    
+
+	</div> 
+{% endblock %}
+
+
+{% block scripts %}
+<script type="text/javascript"> 
+
+    $("div.title").click(function () { 
+        var data_id = $(this).attr("data-title");   
+        $("form#form-title" + data_id).removeClass('d-none')
+        $("div#title" + data_id).addClass('d-none')
+
+        $('button#edit' + data_id).on("click", function (e) {
+            e.preventDefault();
+
+            title = $('input#inputText'+ data_id).val(); 
+
+            $.ajax({
+                type: 'GET',
+                url: '{% url "update-item" %}',
+                data: {'data_id': data_id,'title': title,},
+                datatype: "json",
+                success: function (data) { 
+                    if (data.status == "update-item") {
+                        $("form#form-title" + data_id).addClass('d-none');
+                        $("div#title" + data_id).removeClass('d-none'); 
+                        $("#title" + data_id).html(data.title); 
+                    }   
+                }
+            }); 
+
+        }); 
+    })
+ 
+	// Muda Status do Item da Lista
+	$("div.SelDiv select").on('change', function () {
+
+    var data_id = this.id;
+    var status_id = $(this).find('option').filter(':selected').val();
+
+    console.log("data_id: ", data_id, "status_id: ", status_id)
+
+        $.ajax({
+            type: 'GET',
+            url: '{% url "update-status" %}',
+            data: {
+                'data_id': data_id,
+                'status_id': status_id,
+            },
+            datatype: "json",
+
+            success: function (data) {
+                console.log(data)
+                // Status = Finalizado (id=3)
+                if (data.status == '3'){
+                    $("div#title" + data_id).addClass('check-status');  
+                }else{
+                    $("div#title" + data_id).removeClass('check-status');
+                }
+                
+            }
+
+        });
+    });
+
+    	// Deleta um Item da Lista
+	$("a#btn-delete").on("click", function (e) {
+		e.preventDefault();
+
+		var todo_id = $(this).attr("data-delete");
+		console.log(todo_id);
+
+        $.ajax({
+			type: 'GET',
+			url: '{% url "delete" %}',
+			data: { 'todo_id': todo_id },
+			datatype: "json",
+			success: function (data) {
+                console.log(data)
+                if (data.status == "delete") {
+					$("tbody tr#" + todo_id).fadeOut("slow", function () {
+						$("tbody tr#" + todo_id).remove();
+					});
+				} else {
+					// faz alguma coisa
+				}
+
+			}
+		});
+		 
+	})
+    
+
+
+</script>
+
+
+{% endblock scripts %} 
