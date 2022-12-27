@@ -1,4 +1,4 @@
-# Django: TO DO LIST
+# Django: TO DO LIST com (AJAX)
 
 Nesse tutorial vamos desenvolver um to do list com Django. E conhecer o poder do AJAX para deixar as coisas mais dinâmicas.
 
@@ -6,10 +6,10 @@ Repositório inicial: https://github.com/djangomy/config-default-simple
 
 Depois de feito as configurações iniciais e executado o projeto. 
 
-Vamos para criação do nosso modelo e estrutura do projeto.
+Vamos para criação do nosso modelo e estrutura do projeto. 
+ 
+<details><summary><b>**Modelando Projeto**</b></summary>
 
-- **Modelando Projeto**
-    
     Vamos criar duas tabelas. A primeira é **TodoList** e uma outra **Status,** que serve ****para criar o droplist das informações dos status exemplo: **“⛔️ a Fazer, ⚠️ Fazendo e ✅ Finalizado”.** Poderíamos deixar essas informações fixas em um simples array. Mas achei melhor criar uma tabela onde usuário pode customizar essas informações.
     
     Na tabela **TodoList** vamos criar um campo tipo ***ForeignKey*** relacionando com tabela status. Note que `to_field='id', default='1'` ao adicionar essas duas tags, que significa que para *field id* da tabela **Status** colocar como *default* o item de Id=1. Sempre que criarmos um formulário partir dessa tabela TodoList o campo ‘status” já terá um **valor default.**
@@ -45,8 +45,7 @@ Vamos para criação do nosso modelo e estrutura do projeto.
     from django import forms 
     from .models import TodoList
     
-    class TodoListForm(forms.ModelForm):  
-         
+    class TodoListForm(forms.ModelForm):
         class Meta:
             model = TodoList
             fields = ('title',)
@@ -110,9 +109,8 @@ Vamos para criação do nosso modelo e estrutura do projeto.
     ```html
     # prefiro utilizar versão free CDN.
     <head>
-    	 ....
+        ....
     	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
-     
     </head>
     ```
     
@@ -120,22 +118,16 @@ Vamos para criação do nosso modelo e estrutura do projeto.
     
     ```html
     {% extends 'base.html' %}
-    
     {% block title %}Pagina 1{% endblock %}
-    
     {% block content %}
-    	<h2>Pagina 1</h2> 
-    
+    	<h2>Pagina 1</h2>
     	<div class="p-5">
-    
     		<form class="d-flex gap-4 col-md-6" method="POST"> 
     	      {% csrf_token %}  
                 <button type="submit" class="btn btn-success"><i class="fa fa-plus"></i></button> 
                 {{form}}  
-    		</form>    
-    
+    		</form>     
     		<table class="table"> 
-    
                 <thead>
                     <tr>
                         <th scope="col">Titulo</th> 
@@ -143,7 +135,6 @@ Vamos para criação do nosso modelo e estrutura do projeto.
                         <th scope="col">Deletar</th> 
                     </tr>
                 </thead>
-    
                 {% for el in todo %} # são as linhas que vão repetir
                 <tbody>
                     <tr class="table align-middle">
@@ -155,15 +146,13 @@ Vamos para criação do nosso modelo e estrutura do projeto.
                     </tr>
                 </tbody>  
                 {% endfor %}
-    
-            </table>    
-    
+            </table>
     	</div> 
     {% endblock %}
     ```
-    
-- **Configurar AJAX**
-    
+</details>
+ 
+<details><summary><b>****Configurar AJAX****</b></summary>
     Primeiro para usar o AJAX precisamos importar jquery no nosso projeto. 
     
     Pode pegar o CDN daqui [https://releases.jquery.com/](https://releases.jquery.com/)
@@ -177,8 +166,9 @@ Vamos para criação do nosso modelo e estrutura do projeto.
     </body>
     </html>
     ```
-    
-- **Atualizar Titulo da Lista**
+</details>
+
+<details><summary><b>****Atualizar Titulo da Lista****</b></summary> 
     
     ## Atualizar titulo da lista com AJAX.
     
@@ -264,9 +254,10 @@ Vamos para criação do nosso modelo e estrutura do projeto.
         data = {'status':'update-item', 'title':title}
         return JsonResponse(data) # retorna
     ```
-    
-- **Atualizar Status**
-    
+</details>
+
+ 
+<details><summary><b>****Atualizar Status****</b></summary> 
     ## Atualizar o Status do Item da Lista
     
     Vamos criar um select para atualizar o status do item.
@@ -336,8 +327,9 @@ Vamos para criação do nosso modelo e estrutura do projeto.
     		data = {'status':status_id}
         return JsonResponse(data)
     ```
-    
-- **Deletar um Item da Lista**
+</details>
+
+<details><summary><b>****Deletar um Item da Lista****</b></summary>
     
     ## Deletar Item da Lista
     
@@ -397,3 +389,4 @@ Vamos para criação do nosso modelo e estrutura do projeto.
         data = {'status':'delete'}
         return JsonResponse(data)
     ```
+</details>
