@@ -11,10 +11,7 @@
         }
     </style>
 {% endblock styles %}
-    
-
-
-
+     
 {% block content %}
     <div class="p-5"> 
 	    <h2>Django: TO DO LIST</h2>  
@@ -50,15 +47,15 @@
                     </th>  
   
                     <th scope="row">  
-                        <th scope="row"> 
-                            <div class="SelDiv">
-                                <select class="form-select" name="status" id="{{el.id}}">
-                                    {% for st in status_list %}
-                                    <option value="{{st.id}}"{% if el.status.id == st.id %}selected{% endif %}>{{st.name}}</option>
-                                    {% endfor %}
-                                </select>
-                            </div> 
-                        </th> 
+                    
+                        <div class="SelDiv">
+                            <select class="form-select" name="status" id="{{el.id}}">
+                                {% for st in status_list %}
+                                <option value="{{st.id}}"{% if el.status.id == st.id %}selected{% endif %}>{{st.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div> 
+                     
                     </th> 
 
                     <th scope="row">
