@@ -2,8 +2,10 @@
 
 Nesse tutorial vamos desenvolver um to do list com Django. E conhecer o poder do AJAX para deixar as coisas mais dinâmicas.
 
-Repositório inicial: https://github.com/djangomy/config-default-simple
+[Playlist com Vídeos Tutoriais](https://www.youtube.com/playlist?list=PL2bJNatYYfGSSXCkqOdVvIx4pI3Bcxjt5) 
 
+Repositório inicial: https://github.com/djangomy/config-default-simple
+ 
 Depois de feito as configurações iniciais e executado o projeto. 
 
 Vamos para criação do nosso modelo e estrutura do projeto. 
