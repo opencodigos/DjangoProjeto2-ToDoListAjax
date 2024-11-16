@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Django: TO DO LIST{% endblock %}
-
-
+{% block title %}Django Projeto 2: TO DO LIST{% endblock %} 
 {% block styles %}
     <style>
         .check-status {
@@ -10,11 +8,10 @@
             color: #cbcbcb;
         }
     </style>
-{% endblock styles %}
-     
+{% endblock styles %} 
 {% block content %}
     <div class="p-5"> 
-	    <h2>Django: TO DO LIST</h2>  
+	    <h2>TodoList</h2>  
 
 		<form class="d-flex gap-4 col-md-6" method="POST"> 
 	        {% csrf_token %}  

@@ -1,6 +1,5 @@
 from django.db import models 
 
-
 ## ⛔️ a Fazer, ⚠️ Fazendo e ✅ Finalizado
 class Status(models.Model):
     name = models.CharField(max_length=20)
